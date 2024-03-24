@@ -1,6 +1,6 @@
 import React from "react";
 import { TabsDemo } from "@/components/TabsTest";
-import Logo from "@/components/logo";
+import Logo from "@/components/Logo";
 export default function page() {
   return (
     <main className="container mx-auto flex min-h-screen flex-col justify-between">
