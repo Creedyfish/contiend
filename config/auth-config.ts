@@ -1,17 +1,17 @@
-import NextAuth from "next-auth"
+import NextAuth from "next-auth";
 import {
-    getServerSession,
-    type DefaultSession,
-    type NextAuthOptions,
-  } from "next-auth";
+  getServerSession,
+  type DefaultSession,
+  type NextAuthOptions,
+} from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import GithubProvider from "next-auth/providers/github"
-import GoogleProvider from "next-auth/providers/google"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { PrismaClient } from "@prisma/client"
+import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
 import { db } from "@/config/db";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -27,7 +27,7 @@ declare module "next-auth" {
   //   // role: UserRole;
   // }
 }
-export const authOptions : NextAuthOptions= {
+export const authOptions: NextAuthOptions = {
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
@@ -40,12 +40,21 @@ export const authOptions : NextAuthOptions= {
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
-        clientId: process.env.GOOGLE_ID ?? (() => { throw new Error("GOOGLE_ID is not set in .env file"); })(),
-      clientSecret: process.env.GOOGLE_SECRET ??(() => { throw new Error("GOOGLE_ClIENT is not set in .env file"); })(),
+      clientId:
+        process.env.GOOGLE_ID ??
+        (() => {
+          throw new Error("GOOGLE_ID is not set in .env file");
+        })(),
+      clientSecret:
+        process.env.GOOGLE_SECRET ??
+        (() => {
+          throw new Error("GOOGLE_ClIENT is not set in .env file");
+        })(),
     }),
     // ...add more providers here
   ],
   adapter: PrismaAdapter(db) as Adapter,
-}
+  pages: {},
+};
 
 export const getServerAuthSession = () => getServerSession(authOptions);
