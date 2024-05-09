@@ -40,6 +40,7 @@ export function LoginForm({ setTab }: LoginFormProps) {
   const onSubmit = (data: any) => {
     signIn("credentials", {
       callbackUrl: "/",
+      ...data,
     });
   };
   return (

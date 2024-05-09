@@ -14,6 +14,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DevTool } from "@hookform/devtools";
 import { useForm } from "react-hook-form";
+import wretch from "wretch";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +26,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
 
 const formSchema = z
@@ -59,8 +61,24 @@ export function SignUpForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    try {
+      // const res = await fetch("http://localhost:3000/api/auth/signup", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+
+      // const data = await res.json();
+
+      const res = await wretch()
+        .post(data, "http://localhost:3000/api/auth/signup")
+        .json();
+
+      console.log(res);
+      return Response.json(data);
+    } catch (error) {}
   };
   return (
     <Form {...form}>
